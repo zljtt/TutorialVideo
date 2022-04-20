@@ -11,7 +11,7 @@ public class PlayerData
     public Dictionary<string, bool> collected;
     public int score;
 
-    [NonSerialized]
+    [NonSerialized] // it will notify the compiler not to serialize this field even if it is inside a Serializable class
     public int doNotSerialize;
 }
 
@@ -20,7 +20,8 @@ public class LevelManager : MonoBehaviour
     public PlayerData data;
     public string directory;
 
-    /*
+    /*  
+    *   Event Sequence:
     *   Awake
     *   OnEnable
     *   Start
@@ -61,6 +62,7 @@ public class LevelManager : MonoBehaviour
 
     void OnDestroy()
     {
+        // write into file
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream file = File.Create(directory);
         formatter.Serialize(file, data);
